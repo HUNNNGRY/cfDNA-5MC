@@ -1,0 +1,11 @@
+barcode;Run;Age;alternate_ID;Assay Type;source_name
+SRR11615795.bismark.cov;SRR11615795;47;Normal_40;Bisulfite-Seq;Normal
+SRR11615797.bismark.cov;SRR11615797;62;Normal_6;Bisulfite-Seq;Normal
+SRR11615798.bismark.cov;SRR11615798;60;Normal_3;Bisulfite-Seq;Normal
+SRR11615799.bismark.cov;SRR11615799;55;Normal_19;Bisulfite-Seq;Normal
+SRR11615805.bismark.cov;SRR11615805;64;Normal_29;Bisulfite-Seq;Normal
+SRR11615796.bismark.cov;SRR11615796;57;GC_6;Bisulfite-Seq;GC
+SRR11615812.bismark.cov;SRR11615812;57;GC_11;Bisulfite-Seq;GC
+SRR11615828.bismark.cov;SRR11615828;61;GC_4;Bisulfite-Seq;GC
+SRR11615838.bismark.cov;SRR11615838;50;GC_15;Bisulfite-Seq;GC
+SRR11615851.bismark.cov;SRR11615851;76;GC_37;Bisulfite-Seq;GC
