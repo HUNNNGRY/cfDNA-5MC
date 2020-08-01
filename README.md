@@ -1,6 +1,6 @@
 整条pipeline包括前半部分直接在服务器或集群上用CFEA数据库的WGBS/RRBS流程跑，最后得到的bed文件在服务器上导入RnBeads（R包）跑完默认R包的全部流程，最最后会得到一个启动子，基因，tilling，cpg岛的差异情况。（后面其实还可以设置阈值和补充其他必要分析得到最终的候选biomarker，这里暂时不用）
 
-#<write before>
+# Note
 * CFEA pipeline脚本里用的参考基因组是hg19，我们用的是hg38。
 * 每次关闭R后rnbeads的参数才会重置为默认。
 * 可能是环境问题hub服务器上偶尔报错，优先使用cnode服务器，或者集群（没有账号可以和我说一下）。
@@ -8,10 +8,10 @@
         
 注意检查PATH和软件版本
 # DATA & SCRIPTS
-1.数据表格：https://docs.qq.com/sheet/DSER0bmF1UkxSc1hF?tab=BB08J2,详细原始文件位置，大小，类别等信息都在里面
+## 1.数据表格：https://docs.qq.com/sheet/DSER0bmF1UkxSc1hF?tab=BB08J2,详细原始文件位置，大小，类别等信息都在里面
 > 我已经做完了第一个数据集GSE149438里胃癌GC和正常人Normal的测序数据，因为第一遍主要是配置环境和安装软件R包，调整和理解脚本和参数，认识软件大致输入输出和原理（大概），所以我在这个repo里加了个csv文件，包括5个正常人和5个胃癌，这里建议大家先尝试重现下小部分数据，避免浪费计算资源和时间（我前期用全部数据跑了很长时间。）
 
-2.CFEApipeline：https://github.com/lemonsky123/CFEA-pipeline
+## 2.CFEApipeline：https://github.com/lemonsky123/CFEA-pipeline
 > 这个pipeline整体脚本比较完善，但是有一些输入输出文件目录的框架需要注意一下，详见具体脚本描述，否则很出现很多报错。
 > 还有一点就是最开始他让用conda配置python2.7的环境，实际上其脚本都是用更高等级的python写的，很多语法python2.7并不支持，下面列出了我在服务器上为这个流程测试成功的相关软件的版本信息。有的是系统自带的可以不用额外安装，有的不一定，总之坑很多。
 |name|version|note|
@@ -26,10 +26,10 @@
 |picard|NA| |	
 |deeptools|3.4.3| |
 
-3.RnBeads，强大且完备的R包，可以出来sequencing和array的数据，第二版本去年刚发表，用的人好像很少？参见官网：https://rnbeads.org/index.html
+## 3.RnBeads，强大且完备的R包，可以出来sequencing和array的数据，第二版本去年刚发表，用的人好像很少？参见官网：https://rnbeads.org/index.html
 > R包安装和依附包安装是重点，我安装了近一周时间，多个版本的R上测试过，建议使用conda配置一个新的R环境，优先使用能自动并行的微软的MRO版本。（其实cnode server上配置的就是比较完备的MRO版本，还已经配置了rstudio-server，可以通过浏览器端口访问，实在自己安装不了也可以使用系统自带版本，比如我习惯在浏览器访问，用的就是系统的MRO）
 
-#CFEA 
+# CFEA 
 前面预处理可以不分GC和NC文件夹
 注意：
 * Bismark的index目录为index的上层目录
@@ -59,7 +59,7 @@ python ../CFEA-pipeline/RRBS_WGBS/extract_methylation_coverage.py -i output/bam/
 .bedGraph.gz仅保留了染色体，区段，甲基化比例三列，其中区段从1-based变成0-based
 这里的结果其实已经可以直接用于rnbeads了，后面的##03merge minus/plus strand cpg和###04run merge其实###run merge不用接着跑了，得到的bigwig等其实只有数据库可视化会用
 
-#RnBeads
+# RnBeads
 > 具体安装和使用参见官网https://rnbeads.org/index.html
 ##导入RnBeads
 rnb.run.analysis(dir.reports="/BioII/lulab_b/baopengfei/RnBeads/proj1/results/report",data.source=c("/BioII/lulab_b/baopengfei/RnBeads/proj1/data","/BioII/lulab_b/baopengfei/RnBeads/proj1/data/sample.csv","barcode"),data.type="bed.dir")
