@@ -61,18 +61,26 @@ python ../CFEA-pipeline/RRBS_WGBS/extract_methylation_coverage.py -i output/bam/
 
 # RnBeads
 > 具体安装和使用参见官网https://rnbeads.org/index.html
+
 ##导入RnBeads
 rnb.run.analysis(dir.reports="/BioII/lulab_b/baopengfei/RnBeads/proj1/results/report",data.source=c("/BioII/lulab_b/baopengfei/RnBeads/proj1/data","/BioII/lulab_b/baopengfei/RnBeads/proj1/data/sample.csv","barcode"),data.type="bed.dir")
 注意sample.csv包括barcode（文件名或绝对路径）和source_name（SRAmeta table默认的分组依据），且与bed文件在相同路径，内容如下：
+
 barcode;Run;Age;alternate_ID;Assay Type;source_name
 SRR11615795.bismark.cov;SRR11615795;47;Normal_40;Bisulfite-Seq;Normal
 SRR11615796.bismark.cov;SRR11615796;57;GC_6;Bisulfite-Seq;GC
 ...
 
 CMD:
+
 rm(list = ls())
+
 library(RnBeads)
+
 设置rnb.options(assembly = "hg38",filtering.sex.chromosomes.removal = TRUE, differential.enrichment.lola = TRUE, differential.enrichment.go = TRUE, import.table.separator = ";", import.bed.style = "bismarkCov")
+
 设置并行处理cpu核数（和MRO自动并行的关系比较复杂，我没有设置，之前尝试设置了好像也没有用？）：parallel.setup(6)
+
 设置大数据可以使用硬盘补充RAM: rnb.options(disk.dump.big.matrices=TRUE, disk.dump.bigff=TRUE)，好像需要提前安装simpleCache包，rnbeads没有附带。  
+
 rnb.run.analysis(dir.reports="/BioII/lulab_b/baopengfei/RnBeads/proj1/results/report_cnode_R35",data.source=c("/BioII/lulab_b/baopengfei/RnBeads/proj1/data","/BioII/lulab_b/baopengfei/RnBeads/proj1/data/sample.csv","barcode"),data.type="bed.dir")
