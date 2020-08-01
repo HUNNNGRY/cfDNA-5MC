@@ -31,11 +31,14 @@
 
 # CFEA 
 前面预处理可以不分GC和NC文件夹
+
 注意：
+
 * Bismark的index目录为index的上层目录
 * Bowtie2的路径不要加上bowtie2
-##01mapping bam/sam
-Option1(advised): using available script
+
+## 01mapping bam/sam
+### Option1(advised): using available script
 Help:
 python mapping_WGBS.py -i [path fastq] -p [numer of processes] -m 
         [mapping result dir] -l [log dir] -b [path to put bam files] 
@@ -46,17 +49,18 @@ python ../CFEA-pipeline/RRBS_WGBS/mapping_WGBS.py -i rawdata/  -m output/mapping
 * 消耗时间较长，46对共400G的raw reads在hub上按-p 5(5个一起跑)整整跑了近两天，应该是脚本里面没有确定bismark内部的多线程处理参数。最后仅mapping的记录用于fastqc和multiqc（应该是甲基化测序数据处理的特色，直接trim后仍然是碱基不平衡的状态，可能不适合qc）。最后整体单一位点比对率均>60%
 * bug: 遇到了samtools的附属包不存在或者不是最新版本的错误，导致samtools无法使用，以上脚本产生的bam为空, 后来发现是bismark与CFEA的版本不同导致新版本附带了一个旧版的samtools，该samtools在CFEA环境中优先识别，但无法打开，所以无法产生bam文件。https://github.com/bioconda/bioconda-recipes/issues/12100，已经通过软连接解决两个失败的重新跑一遍后正常
 * 最好能大致阅读一下bismark的说明书
-* 使用的基因组是lulab的贡献基因组hg38，位置在lulab intranet上有
+* 使用的基因组是lulab的贡献基因组hg38，位置在/BioII/lulab_b/shared/genomes
 
-Option2: MANUAL
+### Option2: MANUAL
 for ncname in `ls -1 output/clean/NC/*.fq | cut -d/ -f4 | cut -d. -f1 | sort | uniq`; do bismark --parallel 6 -o output/sam/NC/ --temp_dir tmp/NC/   ref/genome/homo/hg38/  -1 output/clean/NC/$ncname.sra_1_val_1.fq -2 output/clean/NC/$ncname.sra_2_val_2.fq ; done
 
-##02extract methylation coverage site
+## 02extract methylation coverage site
 
 python ../CFEA-pipeline/RRBS_WGBS/extract_methylation_coverage.py -i output/bam/gc/ -c output/extract/gc/ -l output/log/extract/gc/ -p 5
 
 产生.bismark.cov.gz符合RnBeads的测序数据对输入格式的要求，应该可以直接输入，后面RnBeads会自行merge
 .bedGraph.gz仅保留了染色体，区段，甲基化比例三列，其中区段从1-based变成0-based
+
 这里的结果其实已经可以直接用于rnbeads了，后面的##03merge minus/plus strand cpg和###04run merge其实###run merge不用接着跑了，得到的bigwig等其实只有数据库可视化会用
 
 # RnBeads
