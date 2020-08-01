@@ -1,5 +1,12 @@
 整条pipeline包括前半部分直接在服务器或集群上用CFEA数据库的WGBS/RRBS流程跑，最后得到的bed文件在服务器上导入RnBeads（R包）跑完默认R包的全部流程，最最后会得到一个启动子，基因，tilling，cpg岛的差异情况。（后面其实还可以设置阈值和补充其他必要分析得到最终的候选biomarker，这里暂时不用）
 
+#<write before>
+* CFEA pipeline脚本里用的参考基因组是hg19，我们用的是hg38。
+* 每次关闭R后rnbeads的参数才会重置为默认。
+* 可能是环境问题hub服务器上偶尔报错，优先使用cnode服务器，或者集群（没有账号可以和我说一下）。
+* 使用cnode和hub时注意在提交命令前htop命令看一下服务器负载情况，调整脚本的线程数等。
+        
+注意检查PATH和软件版本
 # DATA & SCRIPTS
 1.数据表格：https://docs.qq.com/sheet/DSER0bmF1UkxSc1hF?tab=BB08J2,详细原始文件位置，大小，类别等信息都在里面
 > 我已经做完了第一个数据集GSE149438里胃癌GC和正常人Normal的测序数据，因为第一遍主要是配置环境和安装软件R包，调整和理解脚本和参数，认识软件大致输入输出和原理（大概），所以我在这个repo里加了个csv文件，包括5个正常人和5个胃癌，这里建议大家先尝试重现下小部分数据，避免浪费计算资源和时间（我前期用全部数据跑了很长时间。）
@@ -67,5 +74,5 @@ rm(list = ls())
 library(RnBeads)
 设置rnb.options(assembly = "hg38",filtering.sex.chromosomes.removal = TRUE, differential.enrichment.lola = TRUE, differential.enrichment.go = TRUE, import.table.separator = ";", import.bed.style = "bismarkCov")
 设置并行处理cpu核数（和MRO自动并行的关系比较复杂，我没有设置，之前尝试设置了好像也没有用？）：parallel.setup(6)
-设置大数据可以使用硬盘补充RAM: rnb.options(disk.dump.big.matrices=TRUE, disk.dump.bigff=TRUE)
+设置大数据可以使用硬盘补充RAM: rnb.options(disk.dump.big.matrices=TRUE, disk.dump.bigff=TRUE)，好像需要提前安装simpleCache包，rnbeads没有附带。  
 rnb.run.analysis(dir.reports="/BioII/lulab_b/baopengfei/RnBeads/proj1/results/report_cnode_R35",data.source=c("/BioII/lulab_b/baopengfei/RnBeads/proj1/data","/BioII/lulab_b/baopengfei/RnBeads/proj1/data/sample.csv","barcode"),data.type="bed.dir")
