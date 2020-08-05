@@ -16,15 +16,25 @@
 > 还有一点就是最开始他让用conda配置python2.7的环境，实际上其脚本都是用更高等级的python写的，很多语法python2.7并不支持，下面列出了我在服务器上为这个流程测试成功的相关软件的版本信息。有的是系统自带的可以不用额外安装，有的不一定，总之坑很多。
 
 |name|version|note|
+
 |perl|v5.26.2|系统自带不需要额外安装|
+
 |python|3.6.10|需要在anaconda里配置对应版本的Python环境|
+
 |fastqc|v0.11.9| |
+
 |multiqc|version 1.9|在cnode上是正常的，但在hub上因为语系变量的问题而无法运行，需要暂时export统一语系变量，长期更改需要加入.bashrc文件(即重新登录仍然生效)|
+
 |bismark|v0.22.3| |
+
 |bowtie2|gccversion 7.5.0| |
+
 |samtools|1.7|本身在下载时库选择错误，需要在下载后添加软连接，否则后面的几个步骤报错|
+
 |macs2|2.2.7.1| |	
+
 |picard|NA| |	
+
 |deeptools|3.4.3| |
 
 ## 3.RnBeads，强大且完备的R包，可以出来sequencing和array的数据，第二版本去年刚发表，用的人好像很少？参见官网：https://rnbeads.org/index.html
