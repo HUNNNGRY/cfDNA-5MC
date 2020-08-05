@@ -14,6 +14,7 @@
 ## 2.CFEApipeline：https://github.com/lemonsky123/CFEA-pipeline
 > 这个pipeline整体脚本比较完善，但是有一些输入输出文件目录的框架需要注意一下，详见具体脚本描述，否则很出现很多报错。
 > 还有一点就是最开始他让用conda配置python2.7的环境，实际上其脚本都是用更高等级的python写的，很多语法python2.7并不支持，下面列出了我在服务器上为这个流程测试成功的相关软件的版本信息。有的是系统自带的可以不用额外安装，有的不一定，总之坑很多。
+
 |name|version|note|
 |perl|v5.26.2|系统自带不需要额外安装|
 |python|3.6.10|需要在anaconda里配置对应版本的Python环境|
